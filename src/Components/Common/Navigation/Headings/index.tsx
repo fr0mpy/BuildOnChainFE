@@ -1,7 +1,4 @@
-import { Button, Typography } from '@mui/material';
-import { useDispatch } from 'react-redux/es/hooks/useDispatch';
-import { setSection } from '../../../../Redux/rootSlice';
-import { useAppSelector } from '../../../../Redux/store';
+// import { useDispatch } from 'react-redux/es/hooks/useDispatch';
 
 export enum Sections {
     About = 0,
@@ -14,37 +11,35 @@ interface IProps {
     activeIndex?: number;
 }
 
-export const Headings: React.FC<IProps> = ({ activeIndex }) => {
-    const headings = ['About', 'RoadMap', 'Team', 'FAQ'];
+export const Headings: React.FC<IProps> = () => {
 
-    const dispatch = useDispatch();
 
-    const { section } = useAppSelector(state => {
-        return {
-            section: state.rootReducer.section,
-        }
-    });
+    // const { section } = useAppSelector(state => {
+    //     return {
+    //         section: state.rootReducer.section,
+    //     }
+    // });
 
-    const onClick = (i: number) => (e: React.MouseEvent) => {
-        dispatch(setSection(i))
-    };
+    // const onClick = (i: number) => (e: React.MouseEvent) => {
+    // dispatch(setSection(i))
+    // };
 
     return (
         <>
-            {headings.map((heading, i) => {
+            {/* {headings.map((heading, i) => {
                 const active = i === section;
                 return (
                     <Button onClick={onClick(i)}>
                         <Typography variant={"body1"} textAlign={'center'} sx={{
                             opacity: active ? 1 : .7,
                             fontSize: { sm: 20, md: 20 },
-                            color: { xs: 'white', lg: '#e579b9' }
+                            color: { xs: 'white', lg: '#e9967a' }
                         }}>
                             {heading}
                         </Typography>
                     </Button>
                 )
-            })}
+            })} */}
         </>
     )
 }

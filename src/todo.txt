@@ -1,50 +1,11 @@
--- MINT MODAL --
-* needs to listen out for network changes and display connected network name
+check rerenders
+controlled input error
 
--- CANVAS --
-* erase should not be selectable
-
--- METADATA -- 
-* external url
-* REMOVE <desc>Created with Fabric.js 5.2.1</desc>
-* add max total supply to contract on etherscan
-
-
--- CONTRACT -- (TOMORROW BEGIN)
-* test all contract functions
-* deploy contract
-* add enum for contract address
-* make test tokens to make sure it works
-* verify contract
-* add contract to social links
-
--- HOSTING (TOMORROW RING GODADDY )-- 
-* host
-* point URL
-* sort routes for url
-* ensure all forward to https
-
--- DEPLOYMENT --  
-* check no secrets
-* only deploy front end not contract
-
--- LINKS --
-* images not being served ?
-* real social links 
-
---- ARBITRUM HACK-A-THON ---
-
--- WALLET --
-* name all test wallets
-* create wallet to launch from - secure it 
-
--- MARKETPLACES --
-* create open sea 
-* create looks rare
-* hook these up to social links
-
--- CODE REFACTOR --
-* uglify
-* as and when
-
-* Register collection on metamask
+test whole frontend for bugs
+- all tools work on all 3 options
+- updating 
+- deleting
+- adding new
+- switching between
+- undo 
+- redo

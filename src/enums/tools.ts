@@ -1,10 +1,10 @@
 
 export enum Tools {
-	Pencil = 'pencil',
-	Eraser = 'eraser',
+	Draw = 'draw',
+	Erase = 'erase',
 	Fill = 'fill',
 	Undo = 'undo',
 	Clear = 'clear',
-	Color = 'color',
-	Line = 'line'
+	Line = 'line',
+	ColorPicker = 'colorPicker'
 }

@@ -27,6 +27,8 @@ export const SectionContainer = styled(Box)(({ theme }) => ({
 	height: '100%',
 	overflowY: 'auto',
 	padding: theme.spacing(0, 1),
+
+
 	"&::-webkit-scrollbar": {
 		width: 7,
 	},
@@ -41,7 +43,7 @@ export const SectionContainer = styled(Box)(({ theme }) => ({
 	},
 }))
 
-export const Section = styled(Grid)(({ theme }) => ({
+export const Section = styled(Grid)(() => ({
 	textAlign: 'center',
 	boxSizing: 'border-box',
 	display: 'flex',

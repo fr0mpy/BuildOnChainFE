@@ -1,17 +1,27 @@
+import { isUndefined } from "lodash";
+
 export const componentToHex = (c: string) => {
-	var hex = parseInt(c, 16);
+	const hex = parseInt(c, 16);
+
 	return hex.toString().length === 1 ? "0" + hex : hex;
 };
 
-export const rgbToHex = (r: string, g: string, b: string) => {
-	return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
-};
+function rgbToHex(r: number, g: number, b: number) {
+	return "#" + ((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1);
+}
 
-export const getPixelHexCode = (currentX: number, currentY: number, context: CanvasRenderingContext2D): string => {
+export const getPixelHexCode = (currentX: number, currentY: number, context: CanvasRenderingContext2D): string | undefined => {
 	if (!context) return '';
 
-	const data = context.getImageData(currentX, currentY, 1, 1).data;
-	const hex = rgbToHex(data[0].toString(), data[1].toString(), data[2].toString());
+	const { data } = context.getImageData(currentX, currentY, 1, 1);
+
+	if (isUndefined(data)) return;
+
+	const [r, g, b, a] = Array.from(data);
+
+	if (!a) return 'transparent';
+
+	const hex = rgbToHex(r, g, b);
 
 	return hex;
 };

@@ -1,27 +1,45 @@
 
 import * as React from 'react';
-import Grid from "@mui/material/Grid/Grid";
+import { AllTraitsAndOneOfOnes } from '../../Common/AllTraitsAndOneOfOnes';
+import { CenterComponentResolver } from '../../Resolvers/CenterComponentResolver';
+import { BodyCenterContainer, BodyContainer, BodyLeftContainer, BodyRightContainer, CenterComponentContainer, FooterContainer, HeaderContainer, MainContainer } from './styledComponents';
+import { ProjectInformation } from '../../Common/InformationForms/ProjectInformation';
+import { TraitInformationResolver } from '../../Common/InformationForms/TraitInformationResolver';
+import { ColorPalette } from '../../Common/ColorPalette';
+import { ColorPicker } from '../../Common/ColorPicker';
+import { DrawingTools } from '../../Common/DrawingTools';
+import { Spacer } from '../../Common/Spacer';
+import { HandleBaseLayer } from '../../SmartComponents/HandleBaseLayer';
 
-interface IProps {
-	navigation?: React.ReactNode;
-	canvas?: React.ReactNode;
-	tools?: React.ReactNode;
-};
-
-const DesktopLayout: React.FC<IProps> = ({ navigation, canvas, tools }) => {
-
+const DesktopLayout: React.FC = () => {
+	// console.log('rendering desktop layout')
 	return (
-		<Grid container direction={"row"}>
-			<div>
-				{navigation}
-			</div>
-			<div style={{ flex: 2 }}>
-				{canvas}
-			</div>
-			<div style={{ width: '25%', maxWidth: '360px', flex: 1 }}>
-				{tools}
-			</div>
-		</Grid>
+		<MainContainer>
+			<BodyLeftContainer>
+				<ProjectInformation />
+				<TraitInformationResolver />
+			</BodyLeftContainer>
+			<BodyContainer>
+				<HeaderContainer>
+
+				</HeaderContainer>
+				<BodyCenterContainer>
+					<CenterComponentContainer>
+						<CenterComponentResolver />
+					</CenterComponentContainer>
+					<BodyRightContainer>
+						<HandleBaseLayer />
+						<Spacer vertical spacing={1} />
+						<DrawingTools />
+						<ColorPicker />
+						<ColorPalette />
+					</BodyRightContainer>
+				</BodyCenterContainer>
+				<FooterContainer>
+					<AllTraitsAndOneOfOnes />
+				</FooterContainer>
+			</BodyContainer>
+		</MainContainer>
 	);
 }
 

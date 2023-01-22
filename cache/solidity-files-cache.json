@@ -2,8 +2,8 @@
   "_format": "hh-sol-cache-2",
   "files": {
     "/Users/jay/Code/Paint On Chain/paint-on-chain/contracts/PaintOnChain.sol": {
-      "lastModificationDate": 1664448825701,
-      "contentHash": "710e5a05486886fe615d2e70aa6ec13d",
+      "lastModificationDate": 1664461196541,
+      "contentHash": "67864f39ab648f573226f0d79492a847",
       "sourceName": "contracts/PaintOnChain.sol",
       "solcConfig": {
         "version": "0.8.7",

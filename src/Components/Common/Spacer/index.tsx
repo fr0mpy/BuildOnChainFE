@@ -5,7 +5,7 @@ interface IProps {
 	horizontal?: boolean;
 	spacing: number;
 	vertical?: boolean;
-	style?: any;
+	style?: React.CSSProperties;
 }
 
 export const Spacer = ({ className, horizontal, vertical, style, spacing }: IProps) => {

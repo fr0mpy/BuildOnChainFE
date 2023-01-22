@@ -1,14 +1,14 @@
-let throttlePause: Boolean;
+import { WindowListener } from "../enums/events";
+import { EventType } from "../Theme/events";
+import { throttle } from 'lodash'
 
-const throttle = (callback: Function, time: number, arg?: any) => {
-	if (throttlePause) return;
-	throttlePause = true;
-
-	setTimeout(() => {
-		callback();
-
-		throttlePause = false;
-	}, time);
-};
-
-export default throttle;
+export const handleThrottledEventListener = (
+	listenerState: WindowListener,
+	listener: EventType,
+	func: () => void,
+	timeout: number
+) => {
+	return listenerState === WindowListener.Add
+		? window.addEventListener(listener, throttle(func, timeout))
+		: window.removeEventListener(listener, throttle(func, timeout));
+}

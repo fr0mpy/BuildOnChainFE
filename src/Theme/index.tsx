@@ -1,6 +1,30 @@
 import createTheme from "@mui/material/styles/createTheme";
 
+import "@mui/material/styles/createPalette";
+
+declare module "@mui/material/styles/createPalette" {
+	interface PaletteOptions {
+		white: {
+			main: string;
+		}
+	}
+
+	interface Palette {
+		white: PaletteColor;
+	}
+}
+
 export const theme = createTheme({
+	components: {
+		MuiCssBaseline: {
+			styleOverrides: {
+				body: {
+					display: 'none'
+				},
+
+			}
+		}
+	},
 	breakpoints: {
 		values: {
 			xs: 0,
@@ -11,16 +35,19 @@ export const theme = createTheme({
 		},
 	},
 	palette: {
+		mode: 'dark',
 		primary: {
-			main: '#e579b9'
+			main: '#e9967a'
 		},
 		secondary: {
 			main: '#3effdb'
 		},
 		warning: {
 			main: '#FFFF00'
+		},
+		white: {
+			main: 'white'
 		}
-
 	},
 	typography: {
 		fontFamily: ['Anton, sans-serif', 'Roboto Slab, serif'].join(','),

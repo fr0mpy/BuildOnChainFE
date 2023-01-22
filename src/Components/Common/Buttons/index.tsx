@@ -1,16 +1,16 @@
 import { Typography } from '@mui/material';
 import Button from '@mui/material/Button'
 import { styled } from '@mui/material/styles'
-import { setSnackbar, updateWalletAddress } from '../../../Redux/rootSlice';
+import { setModalType, setSnackbar } from '../../../Redux/uiSlice';
 import { useDispatch } from 'react-redux/';
 import { useAppSelector } from '../../../Redux/store';
+import { ModalType } from '../../Resolvers/ModalResolver';
 
 export const StyledConnectWalletButton = styled(Button)(({ theme }) => ({
 	height: 48,
 	minWidth: 140,
 	width: 'fit-content',
-	color: 'white',
-	border: 'solid 5px white',
+	border: 'solid 5px black',
 	borderRadius: theme.spacing(1),
 	[theme.breakpoints.up('sm')]: {
 		height: 56,
@@ -20,18 +20,18 @@ export const StyledConnectWalletButton = styled(Button)(({ theme }) => ({
 
 interface IConnectWalletButtonProps {
 	mobileVersion?: boolean;
-	handleMint(): void;
 }
 
-export const ConnectWalletAndOpenMintingButton: React.FC<IConnectWalletButtonProps> = ({
-	mobileVersion,
-	handleMint
-}) => {
+export const ConnectWalletAndOpenMintingButton: React.FC<IConnectWalletButtonProps> = () => {
 	const dispatch = useDispatch();
 
 	const { walletAddress } = useAppSelector(state => {
-		return { walletAddress: state.rootReducer.walletAddress }
+		return { walletAddress: state.traitReducer.walletAddress }
 	});
+
+	const handleMint = () => {
+		dispatch(setModalType(ModalType.Mint));
+	};
 
 	const connectWallet = () => {
 
@@ -40,7 +40,7 @@ export const ConnectWalletAndOpenMintingButton: React.FC<IConnectWalletButtonPro
 			(window as any).ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: any) => {
 				const [account] = accounts;
 				(window as any).userWalletAddress = account;
-				dispatch(updateWalletAddress(account))
+				// dispatch(updateWalletAddress(account))
 
 			});
 		} else {

@@ -3,36 +3,23 @@ import * as React from 'react';
 import Grid from "@mui/material/Grid/Grid";
 import { ConnectWalletAndOpenMintingButton } from '../../Common/Buttons';
 import { useDispatch } from 'react-redux';
-import { setSVG, setModalType } from '../../../Redux/rootSlice';
+import { setModalType } from '../../../Redux/uiSlice';
 import Typography from '@mui/material/Typography/Typography';
 import MenuIcon from '@mui/icons-material/Menu';
-import { SocialLinks } from '../../Common/SocialLinks';
-import { ModalType } from '../ModalResolver';
-import { Headings } from '../../Common/Navigation/Headings';
-import { MenuSections } from '../../Common/MenuSections';
+import { ModalType } from '../../Resolvers/ModalResolver';
+
 import IconButton from '@mui/material/IconButton/IconButton';
-import { DrawerComponent } from '../../Common/Drawer';
-import Box from '@mui/material/Box/Box';
 
 interface IProps {
 	canvas?: React.ReactNode;
-	tools?: React.ReactNode;
-	canvasRef: React.RefObject<fabric.Canvas>;
-};
+}
 
 
-const TabletLayout: React.FC<IProps> = ({ canvasRef, canvas, tools }) => {
+const TabletLayout: React.FC<IProps> = ({ canvas }) => {
 	const dispatch = useDispatch();
-	const handleToSVG = () => {
-		if (!canvasRef.current) return;
-		const trimmedSVG = canvasRef.current.toSVG().split('>').slice(2, canvasRef.current.toSVG().split('>').length).join('>');
-		dispatch(setSVG(trimmedSVG));
-	};
 
-	const handleMint = () => {
-		handleToSVG();
-		dispatch(setModalType(ModalType.Mint));
-	};
+	// const handleMint = () => {
+	// };
 
 	const openMenu = () => dispatch(setModalType(ModalType.Menu));
 	return (
@@ -46,14 +33,11 @@ const TabletLayout: React.FC<IProps> = ({ canvasRef, canvas, tools }) => {
 						PAINT ON CHAIN
 					</Typography>
 				</Grid>
-				<ConnectWalletAndOpenMintingButton handleMint={handleMint} />
+				<ConnectWalletAndOpenMintingButton />
 			</Grid>
 			<Grid container direction={'row'} sx={{ height: '100%' }}>
 				{canvas}
 			</Grid>
-			<DrawerComponent anchor={'bottom'}>
-				{tools}
-			</DrawerComponent>
 		</div>
 	)
 }

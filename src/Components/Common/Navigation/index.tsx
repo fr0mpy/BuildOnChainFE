@@ -4,24 +4,21 @@ import { Grid, Typography } from '@mui/material';
 import { Spacer } from '../Spacer';
 import { SocialLinks } from '../SocialLinks';
 import { Headings } from './Headings';
-import { useAppSelector } from '../../../Redux/store';
-import { MenuSections } from '../MenuSections';
 import { DrawerComponent } from '../Drawer';
 
 const Navigation = () => {
 
 	const sectionRef = React.useRef<HTMLDivElement>(null);
 
-	const { section } = useAppSelector(state => {
-		return { section: state.rootReducer.section }
-	});
+	// const { section } = useAppSelector(state => {
+	// 	return { section: state.rootReducer.section }
+	// });
 
-	React.useEffect(() => {
-		if (sectionRef.current) {
-			sectionRef.current.scrollTop = 0;
-		}
-	}, [section])
-
+	// React.useEffect(() => {
+	// 	if (sectionRef.current) {
+	// 		sectionRef.current.scrollTop = 0;
+	// 	}
+	// }, [section])
 	return (
 		<DrawerComponent anchor={'left'}>
 			<NavContainer id={'leftCol'} direction={'column'} justifyContent={'center'}>
@@ -34,7 +31,6 @@ const Navigation = () => {
 				</Grid>
 				<Spacer vertical spacing={3} />
 				<SectionContainer ref={sectionRef}>
-					<MenuSections />
 				</SectionContainer>
 				<Spacer vertical spacing={2} />
 				<SocialLinks />
