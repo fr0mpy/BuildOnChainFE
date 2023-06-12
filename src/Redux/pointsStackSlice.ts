@@ -15,11 +15,7 @@ export const pointsStackSlice = createSlice({
     reducers: {
         pushToCurrentStrokeStack: (state, { payload }: PayloadAction<IDrawingPoints>) => {
             const { currentStrokeStack } = current(state);
-            // const { x: lastX, y: lastY } = currentStrokeStack.pop() ?? {};
-
-            // if (lastX !== payload.x || lastY !== payload.y) {
             state.currentStrokeStack = [...currentStrokeStack, payload]
-            // }
         },
         emptyCurrentStrokeStack: (state) => {
             state.currentStrokeStack = []

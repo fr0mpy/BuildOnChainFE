@@ -1,5 +1,5 @@
-import { useCanvasDimension, usePixelScale } from "../hooks/canvas";
-import { getInBetweenCoordinates2, getScaledDownMouseCoordinates, getScaledToCanvasMouseCoordinates, getScaledUpMouseCoordinates, isDifferentPixel, isValidPixel } from "./canvas";
+import { useCanvasDimension, usePixelDimension, usePixelScale } from "../hooks/canvas";
+import { getInBetweenCoordinates2, getScaledDownMouseCoordinates, getScaledToCanvasMouseCoordinates, getScaledUpMouseCoordinates, isDifferentPixel, isNotValidPixel } from "./canvas";
 import isEmpty from 'lodash/isEmpty';
 import uniqWith from 'lodash/uniqWith'
 import { useCurrentColor, useUpdatePaletteColor } from "../hooks/colorPalette";
@@ -16,6 +16,7 @@ export const useCanvasTools = (ctx: CanvasRenderingContext2D | null, canvas: HTM
     const dispatch = useDispatch();
     const [pixelScale] = usePixelScale();
     const [canvasDimension] = useCanvasDimension();
+    const [pixelDimension] = usePixelDimension();
     const drawingPoints = useDrawingPoints();
     const [currentStrokeStack, pushToCurrentStrokeStack] = useCurrentStrokeStack();
     const currentColor = useCurrentColor();
@@ -97,37 +98,6 @@ export const useCanvasTools = (ctx: CanvasRenderingContext2D | null, canvas: HTM
         }
     };
 
-    const fill: React.MouseEventHandler<HTMLCanvasElement> = ({ nativeEvent: { offsetX, offsetY } }) => {
-        if (ctx) {
-            if (canvas) {
-                const { x, y } = getScaledToCanvasMouseCoordinates(offsetX, offsetY, pixelScale);
-                const currentPixel = getPixelHexCode(x, y, ctx)
-
-                floodFill(x, y, currentPixel);
-            }
-        }
-    };
-
-    const floodFill = (x: number, y: number, targetColor: string | undefined) => {
-        if (isUndefined(targetColor)) return;
-
-        if (ctx) {
-            const currentPixel = getPixelHexCode(x, y, ctx);
-
-            if (currentPixel === targetColor && isValidPixel(x, canvasDimension) && isValidPixel(y, canvasDimension)) {
-                ctx.fillStyle = currentColor;
-                ctx.fillRect(x, y, pixelScale, pixelScale);
-                const { x: scaledDownX, y: scaledDownY } = getScaledDownMouseCoordinates(x, y, pixelScale);
-
-                dispatch(pushToCurrentStrokeStack({ color: currentColor, x: scaledDownX, y: scaledDownY }));
-
-                floodFill(x + pixelScale, y, currentPixel);
-                floodFill(x - pixelScale, y, currentPixel);
-                floodFill(x, y + pixelScale, currentPixel);
-                floodFill(x, y - pixelScale, currentPixel);
-            } else return;
-        }
-    }
 
     const pickColor: React.MouseEventHandler<HTMLCanvasElement> = ({ nativeEvent: { offsetX, offsetY } }) => {
         if (ctx) {
@@ -158,5 +128,5 @@ export const useCanvasTools = (ctx: CanvasRenderingContext2D | null, canvas: HTM
 
     const clearCanvas = () => ctx?.clearRect(0, 0, canvasDimension * pixelScale, canvasDimension * pixelScale);
 
-    return { redrawCanvas, draw, fillRect, beginLine, drawLine, fill, floodFill, pickColor, clearCanvas, erase };
+    return { redrawCanvas, draw, fillRect, beginLine, drawLine, pickColor, clearCanvas, erase };
 }

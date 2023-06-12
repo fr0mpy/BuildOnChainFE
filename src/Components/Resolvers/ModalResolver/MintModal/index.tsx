@@ -67,8 +67,8 @@ export const MintModal = () => {
 
 	const { walletAddress } = useAppSelector(state => {
 		return {
-			walletAddress: state.traitReducer.walletAddress,
-			contractAddress: state.traitReducer.contractAddress
+			walletAddress: state.web3Reducer.walletAddress,
+			contractAddress: state.web3Reducer.contractAddress
 		}
 	});
 

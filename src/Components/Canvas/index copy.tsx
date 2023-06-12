@@ -2,7 +2,7 @@ import { isEqual, isUndefined } from 'lodash';
 import React, { useEffect } from 'react'
 import { WindowListener } from '../../enums/events';
 import { Tools } from '../../enums/tools';
-import { getInBetweenCoordinates2, getScaledDownMouseCoordinates, getScaledToCanvasMouseCoordinates, getScaledUpMouseCoordinates, isDifferentPixel, isValidPixel } from '../../helpers/canvas';
+import { getInBetweenCoordinates2, getScaledDownMouseCoordinates, getScaledToCanvasMouseCoordinates, getScaledUpMouseCoordinates, isDifferentPixel, isNotValidPixel } from '../../helpers/canvas';
 import { getPixelHexCode } from '../../helpers/colors';
 import { handleThrottledEventListener } from '../../helpers/events';
 import { roundNearest } from '../../helpers/maths';
@@ -28,7 +28,7 @@ export const Canvas: React.FC = () => {
     const handleResize = () => getCanvasDimension();
 
     // const [lineStart, setLineStart] = React.useState<ICoordinates>({ x: 0, y: 0 });
-    const { redrawCanvas, draw, fillRect, beginLine, drawLine, clearCanvas, fill, floodFill, pickColor, erase } = useCanvasTools(ctx, canvasRef.current);
+    const { redrawCanvas, draw, fillRect, beginLine, drawLine, clearCanvas, pickColor, erase } = useCanvasTools(ctx, canvasRef.current);
 
     useEffect(() => {
         setCanvasContext();
@@ -111,8 +111,8 @@ export const Canvas: React.FC = () => {
                 return draw(e);
             case Tools.Erase:
                 return erase(e);
-            case Tools.Fill:
-                return fill(e);
+            // case Tools.Fill:
+            //     return fill(e);
             case Tools.ColorPicker:
                 return pickColor(e);
             case Tools.Line:

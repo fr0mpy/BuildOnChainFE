@@ -2,18 +2,10 @@ import { PayloadAction, createSlice, current } from '@reduxjs/toolkit'
 import { IDrawingPoints } from '../enums/canvas';
 import { TraitTypes } from '../enums/traits';
 import { generateGUID } from '../helpers/strings';
+
 import { ITrait, IUniqueTrait } from '../types/traits';
 
-export enum ContractAddress {
-	Goerli = '0xA179e8a35d0d9f8431e14599502bB9B8f2415b72',
-	Ethereum = '',
-	Arbitrum = '0x81a0480CF348865F85e2c0D92f63510b27a30190'
-}
-
 export interface IAppState {
-	walletAddress: string;
-	contractAddress: ContractAddress;
-	newTraitName: string;
 	currentTrait: string;
 	currentTraitVariant: string;
 	traits: Record<string, ITrait>;
@@ -23,9 +15,6 @@ export interface IAppState {
 export const defaultColorPalette = ['#000000', ...Array(15).fill('white')];
 
 export const initialState: IAppState = {
-	walletAddress: '',
-	contractAddress: ContractAddress.Goerli,
-	newTraitName: '',
 	currentTrait: '',
 	currentTraitVariant: '',
 	traits: {
@@ -38,14 +27,12 @@ export const initialState: IAppState = {
 		// 			name: 'Cap',
 		// 			renderStack: [],
 		// 			undoStack: [],
-		// 			imgData: '',
 		// 			rarity: 100
 		// 		},
 		// 		222: {
 		// 			name: 'Trilby',
 		// 			renderStack: [],
 		// 			undoStack: [],
-		// 			imgData: '',
 		// 			rarity: 100
 		// 		}
 		// 	}
@@ -59,14 +46,12 @@ export const initialState: IAppState = {
 		// 			name: 'Trainers',
 		// 			renderStack: [],
 		// 			undoStack: [],
-		// 			imgData: '',
 		// 			rarity: 100
 		// 		},
 		// 		666: {
 		// 			name: 'Flip Flops',
 		// 			renderStack: [],
 		// 			undoStack: [],
-		// 			imgData: '',
 		// 			rarity: 100
 		// 		}
 		// 	}
@@ -76,31 +61,37 @@ export const initialState: IAppState = {
 		// 333: {
 		// 	name: 'Haku',
 		// 	type: TraitTypes.OneOfOne,
-		// 	imgData: '',
 		// 	renderStack: [],
 		// 	undoStack: []
 		// },
 		// 444: {
 		// 	name: 'Gaiku',
 		// 	type: TraitTypes.OneOfOne,
-		// 	imgData: '',
 		// 	renderStack: [],
 		// 	undoStack: []
 		// }
 	},
 }
 
+// export const initialState: IAppState = {
+// 	currentTrait: '',
+// 	currentTraitVariant: '',
+// 	traits: testTraitData,
+// 	oneOfOnes: testOneOfOneData
+// }
+
 export const traitSlice = createSlice({
 	name: 'traitSlice',
 	initialState,
 	reducers: {
-		setTraitVariant: (state, { payload: { coordinates, imgData } }: PayloadAction<{ imgData: string, coordinates: Array<Array<IDrawingPoints>> }>) => {
+		setTraitVariant: (state, { payload: { coordinates } }: PayloadAction<{ coordinates: Array<Array<IDrawingPoints>> }>) => {
 			const currentState = current(state);
 			const { traits, currentTrait, currentTraitVariant } = currentState;
 
 			state.traits = {
 				...currentState.traits,
 				[currentState.currentTrait]: {
+					_id: traits[currentTrait]._id,
 					name: traits[currentTrait].name,
 					type: traits[currentTrait].type,
 					rarity: traits[currentTrait].rarity,
@@ -110,7 +101,6 @@ export const traitSlice = createSlice({
 							name: currentState.traits?.[currentTrait].variants?.[currentTraitVariant]?.name ?? '',
 							renderStack: coordinates,
 							undoStack: currentState.traits[currentTrait].variants?.[currentTraitVariant]?.undoStack ?? [],
-							imgData,
 							rarity: currentState.traits[currentTrait].variants?.[currentTraitVariant]?.rarity ?? 0
 						}
 					}
@@ -129,6 +119,7 @@ export const traitSlice = createSlice({
 			state.traits = {
 				...traits,
 				[traitKey]: {
+					_id: traitKey,
 					name,
 					type: TraitTypes.Variant,
 					variants: {},
@@ -157,7 +148,7 @@ export const traitSlice = createSlice({
 					variants: {
 						...state.traits[currentTrait].variants,
 						[currentTraitVariant]: {
-							...state.traits[currentTrait].variants?.[currentTraitVariant] ?? { imgData: '', renderStack: [], undoStack: [], name: '', rarity: 0 },
+							...state.traits[currentTrait].variants?.[currentTraitVariant] ?? { renderStack: [], undoStack: [], name: '', rarity: 0 },
 							name
 						}
 					}
@@ -209,7 +200,6 @@ export const traitSlice = createSlice({
 							name,
 							renderStack: [],
 							undoStack: [],
-							imgData: '',
 							rarity: 100
 						}
 					}
@@ -223,11 +213,11 @@ export const traitSlice = createSlice({
 			state.oneOfOnes = {
 				...oneOfOnes,
 				[traitKey]: {
+					_id: traitKey,
 					name,
 					type: TraitTypes.OneOfOne,
 					renderStack: [],
 					undoStack: [],
-					imgData: ''
 				}
 			}
 		},
@@ -252,7 +242,6 @@ export const traitSlice = createSlice({
 						...traits?.[currentTrait]?.variants,
 						[currentTraitVariant]: {
 							name: traits?.[currentTrait]?.variants?.[currentTraitVariant]?.name ?? '',
-							imgData: traits?.[currentTrait]?.variants?.[currentTraitVariant]?.imgData ?? '',
 							undoStack: traits?.[currentTrait]?.variants?.[currentTraitVariant]?.undoStack ?? [],
 							renderStack: [...traits?.[currentTrait].variants?.[currentTraitVariant]?.renderStack ?? [], payload],
 							rarity: traits?.[currentTrait]?.variants?.[currentTraitVariant]?.rarity ?? 0
@@ -290,7 +279,6 @@ export const traitSlice = createSlice({
 								...traits[currentTrait].variants,
 								[currentTraitVariant]: {
 									name: traits[currentTrait].variants?.[currentTraitVariant].name ?? '',
-									imgData: '',
 									renderStack: renderStackCopy,
 									undoStack: [...traits[currentTrait].variants?.[currentTraitVariant].undoStack ?? [], undoPoint],
 									rarity: traits[currentTrait].variants?.[currentTraitVariant].rarity ?? 0
@@ -342,7 +330,6 @@ export const traitSlice = createSlice({
 								...traits[currentTrait].variants,
 								[currentTraitVariant]: {
 									name: traits[currentTrait].variants?.[currentTraitVariant].name ?? '',
-									imgData: traits[currentTrait].variants?.[currentTraitVariant].imgData ?? '',
 									renderStack: [...traits[currentTrait].variants?.[currentTraitVariant].renderStack ?? [], redoPoint],
 									undoStack: undoStackCopy,
 									rarity: traits[currentTrait].variants?.[currentTraitVariant].rarity ?? 0
@@ -397,7 +384,7 @@ export const traitSlice = createSlice({
 					variants: {
 						...state.traits[currentTrait].variants,
 						[currentTraitVariant]: {
-							...state.traits[currentTrait].variants?.[currentTraitVariant] ?? { imgData: '', renderStack: [], undoStack: [], name: '', rarity: 0 },
+							...state.traits[currentTrait].variants?.[currentTraitVariant] ?? { renderStack: [], undoStack: [], name: '', rarity: 0 },
 							rarity: payload
 						}
 					}
@@ -414,7 +401,7 @@ export const traitSlice = createSlice({
 					variants: {
 						...traits?.[currentTrait]?.variants,
 						[currentTraitVariant]: {
-							...traits?.[currentTrait]?.variants?.[currentTraitVariant] ?? { imgData: '', renderStack: [], undoStack: [], name: '', rarity: 0 },
+							...traits?.[currentTrait]?.variants?.[currentTraitVariant] ?? { renderStack: [], undoStack: [], name: '', rarity: 0 },
 							renderStack: [],
 							undoStack: []
 						}

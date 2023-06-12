@@ -26,7 +26,7 @@ export const ConnectWalletAndOpenMintingButton: React.FC<IConnectWalletButtonPro
 	const dispatch = useDispatch();
 
 	const { walletAddress } = useAppSelector(state => {
-		return { walletAddress: state.traitReducer.walletAddress }
+		return { walletAddress: state.web3Reducer.walletAddress }
 	});
 
 	const handleMint = () => {

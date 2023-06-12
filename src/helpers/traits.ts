@@ -2,7 +2,7 @@ import { PayloadAction } from "@reduxjs/toolkit";
 import { TraitTypes } from "../enums/traits";
 import { useCurrentTrait } from "../hooks/traits";
 import { AnyTypeGeneric } from "../types/misc";
-import { ITraitVariant, ITraitVariants } from "../types/traits";
+import { IRenderedTraitVariant, ITraitVariants } from "../types/traits";
 
 export const getPreviousTrait = (traitNames: Array<string>, currentTrait: string) => {
     const index = traitNames.indexOf(currentTrait) - 1;
@@ -17,7 +17,7 @@ export const formatTraitVariants = (traitVariants: Record<string, ITraitVariants
         flattenedRenderStack: (value.renderStack ?? []).reduce((o, c) => [...o, ...c], [])
     });
     return out;
-}, [] as Array<ITraitVariant>);
+}, [] as Array<IRenderedTraitVariant>);
 
 export const useIsOneOfOne = () => {
     const currentTrait = useCurrentTrait();

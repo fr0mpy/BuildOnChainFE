@@ -6,7 +6,6 @@ export interface ITraitVariants {
     name: string;
     renderStack: Array<Array<IDrawingPoints>>;
     undoStack: Array<Array<IDrawingPoints>>;
-    imgData: string;
     rarity: number;
 }
 
@@ -18,13 +17,14 @@ export interface IOneOfOneTab extends IUniqueTrait {
     value: string;
 }
 
-export interface ITraitVariant {
+export interface IRenderedTraitVariant {
     value: string;
     name: string;
     flattenedRenderStack: Array<IDrawingPoints>;
 }
 
 export interface ITrait {
+    _id: string;
     name: string;
     type: TraitTypes;
     rarity: number;
@@ -32,19 +32,18 @@ export interface ITrait {
 }
 
 export interface IUniqueTrait {
+    _id: string;
     name: string;
-    imgData: string;
     renderStack: Array<Array<IDrawingPoints>>;
     undoStack: Array<Array<IDrawingPoints>>;
     type: TraitTypes;
 }
 
-export interface IBaseLayer extends IUniqueTrait {
+export interface IBaseLayer extends Omit<IUniqueTrait, '_id'> {
     position: BaseLayerPosition;
 }
 
 export interface IBase {
-    imgData: string;
     coordinates: Array<IDrawingPoints>;
 }
 

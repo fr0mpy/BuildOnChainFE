@@ -3,15 +3,15 @@ import { TraitTypes } from "../../../../../enums/traits";
 import { useBaseSelected } from "../../../../../hooks/base";
 import { useCurrentTraitName } from "../../../../../hooks/traits";
 import { useCurrentTraitVariant } from "../../../../../hooks/traitVariants";
-import { ITraitVariant } from "../../../../../types/traits";
+import { IRenderedTraitVariant } from "../../../../../types/traits";
 import { AddTraitOptionButton } from "../../../Buttons/AddTraitButton";
 import { TraitVariantsContainer } from "./styledComponents";
 import { TraitVariant } from "./TraitVariant";
 
 interface IProps {
     type: TraitTypes;
-    traitVariants?: Array<ITraitVariant>;
-    imgData?: string;
+    traitVariants?: Array<IRenderedTraitVariant>;
+
 }
 
 export const Trait: React.FC<IProps> = memo(({ traitVariants = [] }) => {

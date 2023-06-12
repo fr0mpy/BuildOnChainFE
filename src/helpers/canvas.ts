@@ -15,7 +15,11 @@ export const getScaledUpMouseCoordinates = (x: number, y: number, scale: number)
     y: y * scale
 });
 
-export const isValidPixel = (pixelCoordinate: number, canvasDimension: number): boolean => pixelCoordinate < canvasDimension && pixelCoordinate >= 0;
+export const isNotValidPixel = (pixel: number, pixelScale: number, canvasDimension: number): boolean => {
+    return pixel < 0 || pixel > (canvasDimension - pixelScale)
+};
+
+
 
 export const isDifferentPixel = (
     previousX: number,

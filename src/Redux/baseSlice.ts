@@ -2,6 +2,7 @@ import { PayloadAction, createSlice, current } from '@reduxjs/toolkit'
 import { BaseLayerPosition } from '../enums/base';
 import { IDrawingPoints } from '../enums/canvas';
 import { TraitTypes } from '../enums/traits';
+import { testBaseData } from '../testData/testBaseData';
 import { IBaseLayer } from '../types/traits';
 
 export interface IState {
@@ -9,17 +10,19 @@ export interface IState {
     baseSelected: boolean;
 }
 
-export const initialState: IState = {
-    baseSelected: true,
-    base: {
-        name: 'Base',
-        type: TraitTypes.Base,
-        imgData: '',
-        renderStack: [],
-        undoStack: [],
-        position: BaseLayerPosition.Hidden
-    },
-}
+// export const initialState: IState = {
+//     baseSelected: true,
+//     base: {
+//         name: 'Base',
+//         type: TraitTypes.Base,
+//         imgData: '',
+//         renderStack: [],
+//         undoStack: [],
+//         position: BaseLayerPosition.Hidden
+//     },
+// }
+
+export const initialState: IState = testBaseData;
 
 export const baseSlice = createSlice({
     name: 'base slice',

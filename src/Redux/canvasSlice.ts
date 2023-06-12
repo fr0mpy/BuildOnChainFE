@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { testCanvasData } from '../testData/testCanvasData';
 
 export interface IState {
     canvasDimension: number;
@@ -6,11 +7,13 @@ export interface IState {
     pixelScale: number;
 }
 
-export const initialState: IState = {
-    canvasDimension: 0,
-    pixelDimension: 16,
-    pixelScale: 0,
-}
+// export const initialState: IState = {
+//     canvasDimension: 0,
+//     pixelDimension: 16,
+//     pixelScale: 0,
+// }
+
+export const initialState: IState = testCanvasData;
 
 export const canvasSlice = createSlice({
     name: 'canvas slice',

@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { testCollectionData } from '../testData/testCollectionData';
 
 export interface ISnackBar {
     message: string;
@@ -12,11 +13,13 @@ export interface IState {
     collectionSize: number;
 }
 
-export const initialState: IState = {
-    collectionName: '',
-    collectionDescription: '',
-    collectionSize: 1000,
-}
+// export const initialState: IState = {
+//     collectionName: '',
+//     collectionDescription: '',
+//     collectionSize: 1000,
+// }
+
+export const initialState: IState = testCollectionData
 
 export const collectionSlice = createSlice({
     name: 'collection slice',

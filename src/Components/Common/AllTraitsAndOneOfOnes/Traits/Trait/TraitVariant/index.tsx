@@ -2,12 +2,12 @@ import { memo } from "react";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { setBaseSelected } from "../../../../../../Redux/baseSlice";
 import { setCurrentTraitVariant } from "../../../../../../Redux/traitsSlice";
-import { ITraitVariant } from "../../../../../../types/traits";
+import { IRenderedTraitVariant } from "../../../../../../types/traits";
 import { TraitCanvas } from "../../../../TraitCanvas";
 import { StyledButton, TraitVariantContainer } from "./styledComponents";
 
 interface IProps {
-    traitVariant: ITraitVariant;
+    traitVariant: IRenderedTraitVariant;
     active: boolean;
 }
 

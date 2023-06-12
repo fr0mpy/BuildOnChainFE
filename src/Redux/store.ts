@@ -9,6 +9,7 @@ import uiReducer from './uiSlice';
 import canvasReducer from './canvasSlice';
 import baseReducer from './baseSlice';
 import collectionReducer from './collectionSlice';
+import web3Reducer from './web3slice';
 
 export const store = configureStore({
 	reducer: {
@@ -18,7 +19,8 @@ export const store = configureStore({
 		uiReducer,
 		canvasReducer,
 		baseReducer,
-		collectionReducer
+		collectionReducer,
+		web3Reducer
 	},
 });
 

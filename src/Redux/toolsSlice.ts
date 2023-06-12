@@ -1,5 +1,6 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
 import { Tools } from '../enums/tools';
+import { testColorData } from '../testData/testColorData';
 
 export interface IState {
     currentTool: Tools;
@@ -10,13 +11,17 @@ export interface IState {
 
 export const defaultColorPalette = ['black', ...Array(15).fill('white')];
 
+// export const initialState: IState = {
+//     currentTool: Tools.Draw,
+//     currentColor: '#000000',
+//     currentColorIndex: 0,
+//     colorPalette: defaultColorPalette
+// }
+
 export const initialState: IState = {
     currentTool: Tools.Draw,
-    currentColor: '#000000',
-    currentColorIndex: 0,
-    colorPalette: defaultColorPalette
+    ...testColorData
 }
-
 export const toolsSlice = createSlice({
     name: 'tools slice',
     initialState,

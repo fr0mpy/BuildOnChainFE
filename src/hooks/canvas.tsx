@@ -13,6 +13,7 @@ import { useCurrentColor, useUpdatePaletteColor } from "../hooks/colorPalette";
 import isEqual from "lodash/isEqual";
 import { useCurrentTraitType, useDrawingPoints, useRenderStack } from "./traits";
 import { useCurrentTraitVariant } from "./traitVariants";
+import { IDrawingPoints } from "../enums/canvas";
 
 export const usePixelScale = () => {
     const dispatch = useDispatch();
@@ -74,13 +75,13 @@ export const useCanvasHooks = () => {
     const [pixelDimension, setPixelDimension] = usePixelDimension();
     const previousPixelDimension = usePrevious(pixelDimension);
 
-    const pushToRenderStack = () => {
+    const pushToRenderStack = (stack?: Array<IDrawingPoints>) => {
         const dupeFreeStrokeStack = uniqWith(currentStrokeStack, isEqual);
         resolveByType(
             currentTraitType,
-            () => dispatch(pushToBaseRenderStack(dupeFreeStrokeStack)),
-            () => dispatch(pushToTraitRenderStack(dupeFreeStrokeStack)),
-            () => dispatch(pushToOneOfOneRenderStack(dupeFreeStrokeStack))
+            () => dispatch(pushToBaseRenderStack(stack ?? dupeFreeStrokeStack)),
+            () => dispatch(pushToTraitRenderStack(stack ?? dupeFreeStrokeStack)),
+            () => dispatch(pushToOneOfOneRenderStack(stack ?? dupeFreeStrokeStack))
         )
     };
 

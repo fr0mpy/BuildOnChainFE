@@ -1,25 +1,27 @@
-import React, { useEffect, useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { WindowListener } from '../../enums/events';
 import { Tools } from '../../enums/tools';
 import { handleThrottledEventListener } from '../../helpers/events';
 import { roundNearest } from '../../helpers/maths';
-import { useCanvasHooks, usePixelDimension, usePixelScale } from '../../hooks/canvas';
-import { emptyCurrentStrokeStack } from '../../Redux/pointsStackSlice';
+import { useCanvasHooks } from '../../hooks/canvas';
+import { emptyCurrentStrokeStack, pushToCurrentStrokeStack } from '../../Redux/pointsStackSlice';
 import { CanvasContainer, StyledCanvas } from './styledComponents';
 import { useCanvasTools } from '../../helpers/canvasTools';
 import { useAppSelector } from '../../Redux/store';
 import { setPixelScale } from '../../Redux/canvasSlice';
-
+import isUndefined from 'lodash/isUndefined';
+import { getScaledToCanvasMouseCoordinates, getScaledDownMouseCoordinates, isNotValidPixel } from '../../helpers/canvas';
+import { getPixelHexCode } from '../../helpers/colors';
+import { IDrawingPoints } from '../../enums/canvas';
 export const Canvas: React.FC = () => {
 
     const {
         canvasDimension, canvasRef, containerRef, renderStack, drawingPoints, currentStrokeStack, currentTool,
-        previousTraitVariant, currentTraitVariant, ctx, usingTool,
-        previousPixelDimension, dispatch, pushToRenderStack,
-        clearRenderStack, setCanvasDimension, setCtx, setUsingTool,
+        previousTraitVariant, currentTraitVariant, ctx, usingTool, previousPixelDimension, dispatch,
+        pushToRenderStack, clearRenderStack, setCanvasDimension, setCtx, setUsingTool, currentColor
     } = useCanvasHooks();
 
-    const { redrawCanvas, draw, beginLine, drawLine, clearCanvas, fill, pickColor, erase } = useCanvasTools(ctx, canvasRef.current);
+    const { redrawCanvas, draw, beginLine, drawLine, clearCanvas, pickColor, erase } = useCanvasTools(ctx, canvasRef.current);
     const pixelScale = useAppSelector(state => state.canvasReducer.pixelScale);
     const pixelDimension = useAppSelector(state => state.canvasReducer.pixelDimension);
 
@@ -119,6 +121,11 @@ export const Canvas: React.FC = () => {
             pushToRenderStack();
         }
 
+        if (floodPointsArr.current.length) {
+            pushToRenderStack(floodPointsArr.current);
+            floodPointsArr.current = [];
+        }
+
         dispatch(emptyCurrentStrokeStack());
     };
 
@@ -131,6 +138,44 @@ export const Canvas: React.FC = () => {
             }
         }
     };
+
+    const fill: React.MouseEventHandler<HTMLCanvasElement> = ({ nativeEvent: { offsetX, offsetY } }) => {
+        if (ctx) {
+            if (canvasRef.current) {
+                const { x, y } = getScaledToCanvasMouseCoordinates(offsetX, offsetY, pixelScale);
+                const currentPixel = getPixelHexCode(x, y, ctx)
+
+                floodFill(x, y, currentPixel);
+            }
+        }
+    };
+
+    const floodPointsArr = useRef<Array<IDrawingPoints>>([]);
+
+    const floodFill = (x: number, y: number, targetColor: string | undefined) => {
+        if (
+            isUndefined(targetColor)
+            || x < 0 || x > (canvasDimension - pixelScale)
+            || y < 0 || y > (canvasDimension - pixelScale)
+        ) return;
+        else if (ctx) {
+
+            const currentPixelColor = getPixelHexCode(x, y, ctx);
+            const { x: scaledDownX, y: scaledDownY } = getScaledDownMouseCoordinates(x, y, pixelScale);
+            // console.log(scaledDownX, scaledDownY)
+            if (currentPixelColor === targetColor) {
+                ctx.fillStyle = currentColor;
+
+                ctx.fillRect(x, y, pixelScale, pixelScale);
+                floodPointsArr.current = [...floodPointsArr.current, { color: currentColor, x: scaledDownX, y: scaledDownY }]
+                floodFill(x + pixelScale, y, currentPixelColor);
+                floodFill(x - pixelScale, y, currentPixelColor);
+                floodFill(x, y + pixelScale, currentPixelColor);
+                floodFill(x, y - pixelScale, currentPixelColor);
+                // console.log(fillArr);
+            } else return;
+        }
+    }
 
     return (
         <CanvasContainer ref={containerRef}>
